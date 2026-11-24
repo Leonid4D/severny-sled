@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0d2b45">
+<meta name="description" content="«Северный след» — авторские пешеходные квесты по историческому центру Архангельска: маршрут, задания, подсказки и проверка ответов прямо на телефоне.">
+<title>Северный след — городские квесты по Архангельску</title>
+<style>
+  :root{
+    --navy:#0d2b45; --accent:#c8a24a; --paper:#f7f4ee; --card:#ffffff;
+    --ok:#2e7d32; --bad:#b03a2e;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:Georgia, 'Times New Roman', serif; background:var(--paper); color:#222; line-height:1.6;}
+  header{background:var(--navy); color:#fff; padding:40px 20px 30px; text-align:center;}
+  header h1{font-size:2.4em; letter-spacing:2px;}
+  header .slogan{color:var(--accent); font-style:italic; margin-top:8px;}
+  .hero-btn{margin-top:20px; display:inline-block;}
+  nav{background:#123a5c; padding:12px; display:flex; flex-wrap:wrap; justify-content:center; align-items:center;}
+  nav a{color:#fff; text-decoration:none; margin:0 14px; font-family:Arial, sans-serif; font-size:.95em;
+        display:inline-block; padding:10px 6px;}
+  nav a:hover{color:var(--accent);}
+  main{max-width:840px; margin:0 auto; padding:30px 20px 60px;}
+  main a{color:#14507f; text-decoration-color:var(--accent);}
+  h2{color:var(--navy); margin:26px 0 14px; border-bottom:2px solid var(--accent); padding-bottom:6px;}
+  .cards{display:flex; flex-wrap:wrap; gap:20px;}
+  .card{background:var(--card); border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,.12);
+        padding:22px; flex:1 1 240px; border-top:5px solid var(--navy);}
+  .card.active{border-top-color:var(--accent);}
+  .card h3{color:var(--navy); margin-bottom:8px;}
+  .card p{font-size:.95em; font-family:Arial, sans-serif;}
+  .tag{display:inline-block; background:#eee; border-radius:12px; padding:2px 10px;
+       font-family:Arial, sans-serif; font-size:.8em; margin:4px 6px 10px 0;}
+  .btn{display:inline-flex; align-items:center; justify-content:center; min-height:44px;
+       background:var(--navy); color:#fff; text-decoration:none;
+       padding:10px 22px; border-radius:6px; font-family:Arial, sans-serif; border:none; cursor:pointer; font-size:1em;}
+  .btn:hover{background:#1d4d7a;}
+  .btn.accent{background:var(--accent); color:#333; font-weight:bold;}
+  .btn.soon{background:#e6e0d4; color:#555; cursor:default; font-weight:normal;}
+  /* --- квест --- */
+  .point{background:var(--card); border-left:6px solid var(--accent); border-radius:8px;
+         padding:20px 24px; margin:18px 0; box-shadow:0 2px 6px rgba(0,0,0,.08);}
+  .point h3{color:var(--navy);}
+  .point .addr{font-family:Arial, sans-serif; font-size:.9em; color:#5a5a5a; margin-bottom:10px;}
+  .task{background:#fdf8ec; padding:12px 16px; border-radius:6px; margin:10px 0;}
+  .hint-btn{background:none; border:1px solid var(--navy); color:var(--navy); border-radius:6px;
+            padding:8px 14px; min-height:44px; cursor:pointer; font-family:Arial, sans-serif; font-size:.9em; margin-right:8px;}
+  .hint{display:none; color:#555; font-style:italic; margin:8px 0;}
+  .answer-row{margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+  .answer-row input{padding:11px 12px; min-height:44px; border:1px solid #bbb; border-radius:6px;
+                    font-size:1em; min-width:180px; font-family:Georgia, serif;}
+  .feedback{font-family:Arial, sans-serif; font-weight:bold;}
+  .fb-ok{color:var(--ok);} .fb-bad{color:var(--bad);}
+  .letter{display:inline-block; background:var(--navy); color:var(--accent); font-weight:bold;
+          padding:3px 12px; border-radius:6px; font-family:Arial, sans-serif; line-height:1.3; vertical-align:middle;}
+  .final{background:var(--navy); color:#fff; border-radius:10px; padding:26px; margin-top:26px;}
+  .final h2{color:var(--accent); border-color:var(--accent);}
+  .final input{padding:10px; border-radius:6px; border:none; font-size:1.05em; min-width:220px;}
+  .rules{font-family:Arial, sans-serif; font-size:.95em; background:#fff; border:1px dashed #b9a06a;
+         border-radius:8px; padding:16px 20px;}
+  /* --- доступность --- */
+  a:focus-visible, button:focus-visible, input:focus-visible{outline:3px solid var(--accent); outline-offset:2px;}
+  /* --- паспорт победителя --- */
+  .win-title{font-size:1.15em; margin:16px 0 12px;}
+  .diploma{background:var(--paper); color:#222; border:3px double var(--navy); border-radius:8px;
+           padding:18px 20px; margin:0 0 14px;}
+  .diploma-head{text-align:center; text-transform:uppercase; letter-spacing:2px; font-size:1.05em;
+                color:var(--navy); font-weight:bold; margin-bottom:12px;}
+  .diploma-row{display:flex; flex-wrap:wrap; gap:6px; align-items:baseline; margin:5px 0; font-size:.97em;}
+  .diploma-label{font-family:Arial, sans-serif; font-size:.82em; color:#555; min-width:110px;}
+  .diploma input{background:transparent; border:none; border-bottom:1px dashed #999; color:#222;
+                 font-family:Georgia, serif; font-size:1em; padding:2px 4px; min-width:160px;}
+  footer{background:var(--navy); color:#cfd8e3; text-align:center; padding:18px;
+         font-family:Arial, sans-serif; font-size:.85em;}
+  @media (max-width:600px){
+    header{padding:30px 16px 26px;}
+    header h1{font-size:1.75em; letter-spacing:1px;}
+    main{padding:22px 16px 48px;}
+    nav a{margin:0 1px; padding:10px 3px; font-size:.9em;}
+    .point{padding:16px;}
+    .card{padding:18px;}
+  }
+  @media print{
+    header, nav, #about, #quests, #sources, footer,
+    #kvest1 > h2, #kvest1 > p, #kvest1 > .rules, .point,
+    #kvest1 .final > h2, #kvest1 .final > p, #kvest1 .final > form, #printBtn{display:none !important;}
+    body{background:#fff; color:#111;}
+    main{max-width:none; margin:0; padding:0;}
+    .final{background:#fff; color:#111; margin:0; padding:0;}
+    .diploma{border-color:#0d2b45;}
+    .diploma input{border-bottom:none;}
+  }
+</style>
+</head>
+<body>
+
+<header id="top">
+  <h1>СЕВЕРНЫЙ СЛЕД</h1>
+  <div class="slogan">Городские квесты по Архангельску: гуляй, ищи, узнавай</div>
+  <a class="btn accent hero-btn" href="#start">▶ Начать квест</a>
+</header>
+
+<nav aria-label="Основная навигация">
+  <a href="#top">Главная</a>
+  <a href="#quests">Квесты</a>
+  <a href="#kvest1">Квест №1</a>
+  <a href="#about">О проекте</a>
+  <a href="#sources">Источники</a>
+</nav>
+
+<main>
+  <section id="about">
+    <h2>О проекте</h2>
+    <p>«Северный след» — это авторские пешеходные квесты по Архангельску, созданные школьниками для школьников,
+    туристов и горожан. Каждый квест — это прогулка на 1–1,5 часа по историческим местам города с заданиями,
+    которые нужно разгадать прямо на месте. Никакой скучной лекции: вы сами находите ответы на табличках,
+    памятниках и фасадах — и собираете код победы.</p>
+    <p><b>Как играть:</b> выберите квест → откройте его страницу на телефоне → идите по маршруту от точки к точке,
+    выполняйте задания и вводите ответы. Сайт сразу подскажет, верно ли. Собрали все части кода — вы победили!
+    Прогресс сохраняется: можно закрыть вкладку и вернуться к квесту позже.</p>
+    <p>Сейчас готов один маршрут — «Город, который воевал». Ещё два квеста, «От Холмогор к звёздам» и
+    «Морская столица Русского Севера», проходят проверку на местности и появятся на сайте позже.</p>
+  </section>
+
+  <section id="quests">
+    <h2>Выберите квест</h2>
+    <div class="cards">
+
+      <div class="card active">
+        <h3>Город, который воевал</h3>
+        <p>Квест об Архангельске в годы Великой Отечественной войны: Монумент Победы, юнги, полярные конвои.</p>
+        <span class="tag">1,5 часа</span><span class="tag">центр города</span><span class="tag">сложность: ★★☆</span><br>
+        <a class="btn accent" href="#start">▶ Начать квест</a>
+      </div>
+
+      <div class="card">
+        <h3>От Холмогор к звёздам</h3>
+        <p>Квест, посвящённый Михаилу Ломоносову и его северным корням.</p>
+        <span class="tag">1 час</span><span class="tag">набережная</span><span class="tag">сложность: ★☆☆</span><br>
+        <span class="btn soon" aria-disabled="true">В разработке</span>
+      </div>
+
+      <div class="card">
+        <h3>Морская столица Русского Севера</h3>
+        <p>Квест о порте, Петре I и полярных экспедициях — о том, как Архангельск открывал Арктику.</p>
+        <span class="tag">1,5 часа</span><span class="tag">центр города</span><span class="tag">сложность: ★★☆</span><br>
+        <span class="btn soon" aria-disabled="true">В разработке</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= КВЕСТ 1 ================= -->
+  <section id="kvest1">
+    <h2>Квест «Город, который воевал»</h2>
+    <p>Во время Великой Отечественной войны Архангельск был важнейшим портом севера страны:
+    сюда приходили союзные конвои, отсюда уходили корабли, здесь учились и работали совсем юные ребята.
+    Пройдите маршрут — и соберите код победы.</p>
+
+    <div class="rules" id="start">
+      <b>Маршрут:</b> площадь Мира (Монумент Победы) → набережная Северной Двины → площадь Профсоюзов.<br>
+      <b>Время:</b> ~1,5 часа. &nbsp; <b>Что взять:</b> телефон, ручку и внимательные глаза.<br>
+      <b>Правило:</b> ответы ищите на табличках, стендах и постаментах — ничего не нужно «знать заранее».<br>
+      <b>Безопасность:</b> переходите дорогу по переходам, у воды держитесь дорожек, в тёмное время идите компанией.<br>
+      <b>Прогресс:</b> <span id="progress">пройдено 0 из 3 точек</span> &nbsp;
+      <button class="hint-btn" type="button" onclick="resetQuest()">Начать заново</button>
+    </div>
+
+    <!-- Точка 1 -->
+    <div class="point">
+      <h3>Точка 1. Монумент Победы</h3>
+      <div class="addr">Площадь Мира, у Вечного огня. Старт маршрута.</div>
+      <div class="task"><b>Задание.</b> Обойдите мемориал и найдите год его открытия. Впишите год полностью,
+        четырьмя цифрами. Последние две цифры года — это первая часть кода победы, её сайт покажет
+        после верного ответа.</div>
+      <button class="hint-btn" type="button" data-hint="h1" aria-expanded="false" aria-controls="h1"
+              onclick="toggleHint('h1', this)">Показать подсказку</button>
+      <div class="hint" id="h1">Год выбит на постаменте или на мемориальной таблице рядом с Вечным огнём.</div>
+      <form class="answer-row" onsubmit="check(1); return false;">
+        <input type="text" id="in1" inputmode="numeric" autocomplete="off"
+               aria-label="Год открытия Монумента Победы" placeholder="Год открытия (4 цифры)">
+        <button class="btn" type="submit">Проверить</button>
+        <span class="feedback" id="fb1" role="status" aria-live="polite"></span>
+      </form>
+    </div>
+
+    <!-- Точка 2 -->
+    <div class="point">
+      <h3>Точка 2. Памятник Соловецким юнгам</h3>
+      <div class="addr">Набережная Северной Двины, в створе улицы Карла Маркса.</div>
+      <div class="task"><b>Задание.</b> Прочитайте стенд у памятника: в Соловецкую школу юнг набирали подростков
+        определённого возраста. Впишите меньшее число лет из этого диапазона.</div>
+      <button class="hint-btn" type="button" data-hint="h2" aria-expanded="false" aria-controls="h2"
+              onclick="toggleHint('h2', this)">Показать подсказку</button>
+      <div class="hint" id="h2">Ищите на информационном стенде фразу о возрасте набора — нужно нижнее значение диапазона.</div>
+      <form class="answer-row" onsubmit="check(2); return false;">
+        <input type="text" id="in2" inputmode="numeric" autocomplete="off"
+               aria-label="Возраст юнг, меньшее число лет" placeholder="Возраст юнг (число)">
+        <button class="btn" type="submit">Проверить</button>
+        <span class="feedback" id="fb2" role="status" aria-live="polite"></span>
+      </form>
+    </div>
+
+    <!-- Точка 3 -->
+    <div class="point">
+      <h3>Точка 3. Порт и полярные конвои</h3>
+      <div class="addr">Набережная Северной Двины, район Морского-речного вокзала.</div>
+      <div class="task"><b>Задание.</b> Найдите на набережной памятник участникам Северных конвоев и прочитайте
+        табличку. Впишите слово, которым в этих текстах называют боевые корабли, охранявшие транспортные суда
+        (оно начинается на «э»).</div>
+      <button class="hint-btn" type="button" data-hint="h3" aria-expanded="false" aria-controls="h3"
+              onclick="toggleHint('h3', this)">Показать подсказку</button>
+      <div class="hint" id="h3">Речь о сопровождении: такие корабли называют эскортными, а отряд — одним словом на «э».</div>
+      <form class="answer-row" onsubmit="check(3); return false;">
+        <input type="text" id="in3" autocomplete="off"
+               aria-label="Слово на «э», обозначающее корабли охранения" placeholder="Слово на «э»">
+        <button class="btn" type="submit">Проверить</button>
+        <span class="feedback" id="fb3" role="status" aria-live="polite"></span>
+      </form>
+    </div>
+
+    <!-- Финал -->
+    <div class="final">
+      <h2>Финал. Код победы</h2>
+      <p>Соедините три части, которые вы получили на точках: число с точки 1, число с точки 2 и слово с точки 3 —
+      через дефис. Например: <i>7-42-слово</i> (это пример, а не ответ!).</p>
+      <form class="answer-row" onsubmit="checkFinal(); return false;">
+        <input type="text" id="inF" autocomplete="off" aria-label="Код победы" placeholder="Введите код победы">
+        <button class="btn accent" type="submit">Проверить код</button>
+        <span class="feedback" id="fbF" role="status" aria-live="polite"></span>
+      </form>
+
+      <div id="winBox" style="display:none;">
+        <p class="win-title">🏆 Поздравляем! Квест «Город, который воевал» пройден.</p>
+
+        <div class="diploma">
+          <div class="diploma-head">Паспорт победителя</div>
+          <div class="diploma-row"><span class="diploma-label">Команда:</span>
+            <input type="text" id="teamName" aria-label="Название команды" placeholder="название команды"></div>
+          <div class="diploma-row"><span class="diploma-label">Квест:</span> «Город, который воевал»</div>
+          <div class="diploma-row"><span class="diploma-label">Маршрут:</span> Монумент Победы → набережная → площадь Профсоюзов</div>
+          <div class="diploma-row"><span class="diploma-label">Дата:</span> <span id="winDate"></span></div>
+          <div class="diploma-row"><span class="diploma-label">Код победы:</span> <b id="winCode"></b></div>
+          <div class="diploma-row"><span class="diploma-label">Отметки:</span> ✓ точка 1 · ✓ точка 2 · ✓ точка 3</div>
+        </div>
+
+        <p>Сделайте фото команды у Монумента Победы: паспорт и фото — ваша награда. Паспорт можно распечатать —
+        для этого нажмите кнопку ниже и выберите печать.</p>
+        <button class="btn accent" type="button" id="printBtn" onclick="window.print()">Распечатать паспорт</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="sources">
+    <h2>Источники и проверка фактов</h2>
+    <p>Факты о памятниках сверены по открытым источникам:
+      <a href="https://ru.wikipedia.org/wiki/%D0%9F%D0%BB%D0%BE%D1%89%D0%B0%D0%B4%D1%8C_%D0%9C%D0%B8%D1%80%D0%B0_(%D0%90%D1%80%D1%85%D0%B0%D0%BD%D0%B3%D0%B5%D0%BB%D1%8C%D1%81%D0%BA)" target="_blank" rel="noopener">Площадь Мира и Монумент Победы (открыт 9 мая 1969 года)</a>,
+      <a href="https://ru.wikipedia.org/wiki/%D0%9E%D0%B1%D0%B5%D0%BB%D0%B8%D1%81%D0%BA_%D0%A1%D0%B5%D0%B2%D0%B5%D1%80%D0%B0" target="_blank" rel="noopener">Обелиск Севера (1930 год)</a>,
+      <a href="https://arhlib.ru/2025/05/yungi-severnogo-flota-3/" target="_blank" rel="noopener">Соловецкая школа юнг: набор 14–16 лет</a>,
+      <a href="https://www.1tv.ru/news/2015-08-31/12048-v_arhangelske_otkryt_pamyatnik_uchastnikam_severnyh_konvoev" target="_blank" rel="noopener">памятник участникам Северных конвоев (2015 год)</a>.</p>
+    <p>Если на месте формулировка на стенде отличается от нашей — напишите команде проекта, мы обновим сайт.</p>
+  </section>
+</main>
+
+<footer>
+  Проект «Северный след» · команда учащихся 9 классов · Архангельск · 2026<br>
+  Фото и отзывы о квестах присылайте классному руководителю или в группу проекта.
+</footer>
+
+<script>
+/* ================== НАСТРОЙКИ КВЕСТА ==================
+   Ответы проверены по открытым источникам (ссылки — в разделе «Источники»).
+   Если на месте надпись отличается — меняйте значение здесь: сайт сам
+   пересчитает части кода и код победы.
+   Ответ сравнивается без учёта регистра, пробелов, дефисов и знаков препинания. */
+
+var ANSWERS = {
+  1: '1969',          // год открытия Монумента Победы
+  2: '14',            // нижняя граница возраста юнг (14–16 лет)
+  3: 'эскорт'         // корабли охранения конвоев
+};
+
+/* Варианты, которые тоже считаются верными */
+var ALIAS = {
+  1: ['1969 год', '1969 г'],
+  2: ['четырнадцать'],
+  3: ['эскортный', 'эскортные', 'эскортные корабли', 'эскортом']
+};
+
+var KEY = 'severny-sled:kvest1:v1';
+var solved = { 1: false, 2: false, 3: false };
+
+function el(id){ return document.getElementById(id); }
+
+/* приведение ответа к «плоскому» виду */
+function norm(s){
+  return String(s).toLowerCase().replace(/ё/g, 'е').replace(/[^0-9a-zа-я]+/g, '');
+}
+
+function codePart(n){
+  if (n === 1) return String(ANSWERS[1]).slice(-2);   // последние две цифры года
+  if (n === 2) return String(ANSWERS[2]);
+  return String(ANSWERS[3]);
+}
+
+function finalCode(){
+  return codePart(1) + '-' + codePart(2) + '-' + codePart(3);
+}
+
+/* null — пустой ввод, true/false — проверка */
+function isRight(n, raw){
+  var v = norm(raw);
+  if (!v) return null;
+
+  var correct = String(ANSWERS[n]);
+  if (/^[0-9]+$/.test(correct)) {
+    return String(raw).replace(/[^0-9]/g, '') === correct;
+  }
+
+  var list = [correct].concat(ALIAS[n] || []);
+  for (var i = 0; i < list.length; i++) {
+    if (norm(list[i]) === v) return true;
+  }
+  return false;
+}
+
+function showFb(id, text, cls){
+  var e = el(id);
+  e.textContent = text;
+  e.className = 'feedback' + (cls ? ' ' + cls : '');
+}
+
+function solvedCount(){
+  var n = 0;
+  for (var k in solved) if (solved[k]) n++;
+  return n;
+}
+
+function updateProgress(){
+  var n = solvedCount();
+  el('progress').textContent = (n === 3)
+    ? 'все три точки пройдены — соберите код победы'
+    : 'пройдено ' + n + ' из 3 точек';
+}
+
+function check(n){
+  var res = isRight(n, el('in' + n).value);
+
+  if (res === null) {
+    showFb('fb' + n, 'Введите ответ, который нашли на месте, — и проверим.', '');
+    return;
+  }
+  if (res) {
+    solved[n] = true;
+    showFb('fb' + n, '✓ Верно! Часть кода: ' + codePart(n), 'fb-ok');
+    updateProgress();
+    saveState();
+  } else {
+    showFb('fb' + n, '✗ Пока неверно — поищите ещё.', 'fb-bad');
+  }
+}
+
+function checkFinal(){
+  if (solvedCount() < 3) {
+    showFb('fbF', 'Сначала пройдите все три точки — код собирается из их частей.', '');
+    return;
+  }
+  var v = el('inF').value;
+  if (norm(v) === '') {
+    showFb('fbF', 'Введите код — его части вы увидели на точках.', '');
+    return;
+  }
+  if (norm(v) === norm(finalCode())) {
+    win();
+  } else {
+    showFb('fbF', '✗ Не сходится. Проверьте порядок: точка 1 — точка 2 — точка 3, через дефис.', 'fb-bad');
+  }
+}
+
+function win(){
+  el('winCode').textContent = finalCode();
+  el('winDate').textContent = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+  showFb('fbF', '✓ Верно! Код победы собран.', 'fb-ok');
+  el('winBox').style.display = 'block';
+  saveState();
+}
+
+function toggleHint(id, btn){
+  var h = el(id);
+  var open = (h.style.display === 'block');
+  h.style.display = open ? 'none' : 'block';
+  if (btn) {
+    btn.textContent = open ? 'Показать подсказку' : 'Скрыть подсказку';
+    btn.setAttribute('aria-expanded', String(!open));
+  }
+  saveState();
+}
+
+/* ---------- сохранение прогресса ---------- */
+function saveState(){
+  try {
+    localStorage.setItem(KEY, JSON.stringify({
+      solved: solved,
+      vals: {
+        1: el('in1').value, 2: el('in2').value, 3: el('in3').value, F: el('inF').value
+      },
+      hints: { h1: el('h1').style.display, h2: el('h2').style.display, h3: el('h3').style.display },
+      team: el('teamName') ? el('teamName').value : '',
+      win: el('winBox').style.display === 'block'
+    }));
+  } catch (e) { /* режим приватного просмотра — просто не сохраняем */ }
+}
+
+function restoreState(){
+  var s = null;
+  try { s = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { s = null; }
+  if (!s) { updateProgress(); return; }
+
+  if (s.solved) solved = s.solved;
+
+  ['1', '2', '3', 'F'].forEach(function(k){
+    if (s.vals && s.vals[k]) el('in' + k).value = s.vals[k];
+  });
+
+  ['1', '2', '3'].forEach(function(k){
+    if (solved[k]) showFb('fb' + k, '✓ Верно! Часть кода: ' + codePart(Number(k)), 'fb-ok');
+  });
+
+  ['h1', 'h2', 'h3'].forEach(function(h){
+    if (s.hints && s.hints[h] === 'block') {
+      el(h).style.display = 'block';
+      var b = document.querySelector('.hint-btn[data-hint="' + h + '"]');
+      if (b) {
+        b.textContent = 'Скрыть подсказку';
+        b.setAttribute('aria-expanded', 'true');
+      }
+    }
+  });
+
+  if (el('teamName') && s.team) el('teamName').value = s.team;
+
+  if (s.win) {
+    el('winCode').textContent = finalCode();
+    el('winDate').textContent = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+    el('winBox').style.display = 'block';
+    showFb('fbF', '✓ Верно! Код победы собран.', 'fb-ok');
+  }
+
+  updateProgress();
+}
+
+function resetQuest(){
+  try { localStorage.removeItem(KEY); } catch (e) {}
+
+  ['in1', 'in2', 'in3', 'inF'].forEach(function(id){
+    var i = el(id);
+    i.value = '';
+    i.removeAttribute('aria-invalid');
+  });
+  ['fb1', 'fb2', 'fb3', 'fbF'].forEach(function(id){ showFb(id, '', ''); });
+
+  solved = { 1: false, 2: false, 3: false };
+
+  ['h1', 'h2', 'h3'].forEach(function(h){
+    el(h).style.display = 'none';
+    var b = document.querySelector('.hint-btn[data-hint="' + h + '"]');
+    if (b) {
+      b.textContent = 'Показать подсказку';
+      b.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  el('winBox').style.display = 'none';
+  if (el('teamName')) el('teamName').value = '';
+
+  updateProgress();
+  document.getElementById('start').scrollIntoView({ behavior: 'smooth' });
+}
+
+/* ---------- запуск ---------- */
+(function(){
+  ['in1', 'in2', 'in3', 'inF'].forEach(function(id){
+    var input = el(id);
+    var n = id.slice(2);                 // '1' | '2' | '3' | 'F'
+    input.addEventListener('input', function(){
+      showFb('fb' + n, '', '');          // старый фидбек больше не врёт
+    });
+  });
+
+  if (el('teamName')) el('teamName').addEventListener('input', saveState);
+
+  restoreState();
+})();
+</script>
+</body>
+</html>

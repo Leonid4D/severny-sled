@@ -1,0 +1,9 @@
+# Не отправлять на сайт: презентации, документы и локальные копии
+*.pptx
+*.docx
+*.pdf
+*.bak-*
+_work/
+.impeccable/
+Thumbs.db
+desktop.ini

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d2b45">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Северный след — тест по истории Архангельска">
+<meta property="og:description" content="10 вопросов за 6 минут. Пройди тест и отправь результат в группу одним сообщением.">
+<title>Северный след — тест</title>
+<style>
+  :root{
+    --navy:#0d2b45; --navy2:#123a5c; --gold:#c8a24a; --gold2:#b8912f;
+    --ink:#0d2338; --muted:#65798d; --line:#dfe7ef; --paper:#ffffff;
+    --ok:#2f8f5b; --warn:#b4552a;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+  html,body{margin:0; padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(120% 80% at 15% -10%, #1b4a72 0%, transparent 60%),
+      radial-gradient(90% 70% at 95% 110%, #16405f 0%, transparent 55%),
+      linear-gradient(160deg, #0d2b45 0%, #123a5c 55%, #0e2f4c 100%);
+    min-height:100dvh;
+    display:flex; align-items:flex-start; justify-content:center;
+    padding:18px 14px calc(22px + env(safe-area-inset-bottom));
+  }
+  .wrap{width:100%; max-width:520px}
+  .brand{display:flex; align-items:center; gap:10px; margin:6px 2px 14px; color:#cfe0ee}
+  .brand .star{width:22px; height:22px; flex:none; color:var(--gold)}
+  .brand b{font-size:13px; letter-spacing:.14em; text-transform:uppercase; font-weight:600}
+  .card{
+    background:var(--paper); border-radius:20px; padding:22px 20px 20px;
+    box-shadow:0 18px 40px rgba(3,18,33,.35);
+  }
+  h1{font-size:26px; line-height:1.2; margin:0 0 6px; letter-spacing:-.01em}
+  h2{font-size:22px; line-height:1.25; margin:0 0 8px}
+  .sub{color:var(--muted); font-size:15px; line-height:1.45; margin:0 0 18px}
+  .label{display:block; font-size:12.5px; letter-spacing:.08em; text-transform:uppercase;
+         color:var(--muted); font-weight:600; margin:16px 0 8px}
+  input[type=number]{
+    width:100%; font:inherit; font-size:20px; text-align:center; font-weight:600;
+    padding:12px 14px; border:1.5px solid var(--line); border-radius:14px; color:var(--ink);
+    background:#f7fafc; outline:none; appearance:textfield;
+  }
+  input[type=number]::-webkit-outer-spin-button,
+  input[type=number]::-webkit-inner-spin-button{appearance:none; margin:0}
+  input[type=number]:focus{border-color:var(--gold); background:#fffdf7}
+  .chips{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+  .chip{
+    font:inherit; font-size:15.5px; font-weight:600; text-align:center; cursor:pointer;
+    padding:14px 10px; border-radius:14px; border:1.5px solid var(--line);
+    background:#f7fafc; color:var(--ink); transition:.15s;
+  }
+  .chip small{display:block; font-size:11.5px; font-weight:500; color:var(--muted); margin-top:3px}
+  .chip[aria-pressed=true]{border-color:var(--navy); background:var(--navy); color:#fff}
+  .chip[aria-pressed=true] small{color:#bcd3e6}
+  .btn{
+    display:block; width:100%; font:inherit; font-size:17.5px; font-weight:700; cursor:pointer;
+    padding:16px 18px; border-radius:16px; border:0; margin-top:22px;
+    background:linear-gradient(180deg,var(--gold) 0%,var(--gold2) 100%); color:#22180a;
+    box-shadow:0 8px 20px rgba(200,162,74,.32); transition:transform .08s;
+  }
+  .btn:active{transform:translateY(1px)}
+  .btn[disabled]{opacity:.45; box-shadow:none; cursor:default}
+  .btn-ghost{
+    background:transparent; color:var(--navy); border:1.5px solid var(--line);
+    box-shadow:none; font-weight:600; margin-top:10px;
+  }
+  .hint{font-size:13px; line-height:1.45; color:var(--muted); margin:14px 0 0}
+  .topline{display:flex; justify-content:space-between; align-items:baseline;
+           font-size:13px; color:var(--muted); font-weight:600; margin-bottom:10px}
+  .bar{height:6px; border-radius:99px; background:#e7eef5; overflow:hidden; margin-bottom:20px}
+  .bar i{display:block; height:100%; width:0; border-radius:99px;
+         background:linear-gradient(90deg,var(--navy) 0%, #2a6e9e 100%); transition:width .25s}
+  .q{font-size:20px; line-height:1.35; font-weight:650; margin:0 0 18px}
+  .opt{
+    display:block; width:100%; text-align:left; font:inherit; font-size:16px; line-height:1.35;
+    padding:15px 16px; margin-bottom:9px; border-radius:14px; border:1.5px solid var(--line);
+    background:#f9fbfd; color:var(--ink); cursor:pointer; transition:.12s;
+  }
+  .opt:active{background:#eef4fa; border-color:#c3d3e2}
+  .scale{display:grid; grid-template-columns:repeat(5,1fr); gap:7px}
+  .scale button{
+    font:inherit; font-size:17px; font-weight:700; padding:16px 0; border-radius:13px;
+    border:1.5px solid var(--line); background:#f7fafc; color:var(--ink); cursor:pointer;
+  }
+  .scale button:active{background:var(--navy); color:#fff; border-color:var(--navy)}
+  .scale-legend{display:flex; justify-content:space-between; font-size:11.5px; color:var(--muted);
+                margin-top:8px}
+  .back{background:none; border:0; font:inherit; font-size:13.5px; color:var(--muted);
+        padding:8px 0; cursor:pointer; margin-top:6px}
+  .score{display:flex; align-items:baseline; gap:8px; margin:4px 0 6px}
+  .score b{font-size:40px; letter-spacing:-.02em; color:var(--navy)}
+  .score span{font-size:15px; color:var(--muted)}
+  .stat{margin:14px 0 0; padding:14px 16px; border-radius:14px; background:#f2f7fb;
+        font-size:15px; line-height:1.45}
+  pre.code{
+    margin:14px 0 0; padding:14px 16px; border-radius:14px; background:#0d2b45; color:#e9f2fa;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:13.5px;
+    line-height:1.5; white-space:pre-wrap; word-break:break-word;
+  }
+  .thanks{font-size:14px; color:var(--muted); margin-top:16px; line-height:1.5}
+  .err{color:var(--warn); font-size:13.5px; margin-top:10px; display:none}
+  .foot{color:#9db6ca; font-size:11.5px; text-align:center; margin-top:14px; line-height:1.5}
+  .hidden{display:none !important}
+  @media (prefers-reduced-motion:reduce){*{transition:none !important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">
+    <svg class="star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 2l2.6 6.3L21 12l-6.4 3.7L12 22l-2.6-6.3L3 12l6.4-3.7z"/>
+    </svg>
+    <b>Северный след · тест</b>
+  </div>
+
+  <main class="card" id="app"></main>
+  <p class="foot">Проект «Северный след» · команда «3 гимназия»<br>
+    Мастерская технической мысли ·
+    <a href="https://leonid4d.github.io/severny-sled/" style="color:#c8a24a;text-decoration:none">сайт проекта</a>
+  </p>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var QUESTIONS = [
+    { q: "В каком году основан Архангельск?", o: ["1584", "1613", "1703", "1721"], a: 0 },
+    { q: "Как называлось поселение на месте Архангельска до 1613 года?",
+      o: ["Новые Холмогоры", "Соловецкий посад", "Онежская слобода", "Пустозёрск"], a: 0 },
+    { q: "Чем был особенно важен Архангельск в 1941–1945 годах?",
+      o: ["Принимал союзные северные конвои с грузами", "Был столицей страны",
+         "Через него проходила линия фронта", "Здесь находился первый университет"], a: 0 },
+    { q: "Кто из уроженцев Архангельской земли основал Московский университет?",
+      o: ["Михаил Ломоносов", "Пётр I", "Дмитрий Менделеев", "Николай Карамзин"], a: 0 },
+    { q: "Кто такие поморы?",
+      o: ["Мореходы, ходившие по Белому и Баренцеву морям", "Жители города Померании",
+         "Купцы из Новгорода", "Строители деревянных храмов"], a: 0 },
+    { q: "Что такое Соловецкая школа юнг?",
+      o: ["Школа, где в годы войны готовили юных моряков", "Первая школа поморов XVII века",
+         "Морской корпус в Санкт-Петербурге", "Училище, где учился Ломоносов"], a: 0 },
+    { q: "Что такое Гостиные дворы в Архангельске?",
+      o: ["Каменный торговый комплекс XVII века, сегодня музей", "Жилые дома для моряков",
+         "Корабельная верфь", "Оборонительная крепость"], a: 0 },
+    { q: "Какая река является главной для Архангельска?",
+      o: ["Северная Двина", "Онега", "Печора", "Вычегда"], a: 0 },
+    { q: "Что сделал Пётр I, впервые приехав в Архангельск в 1693 году?",
+      o: ["Заложил судостроительную верфь и дал толчок морскому делу", "Основал город",
+         "Построил первый каменный мост", "Открыл университет"], a: 0 },
+    { q: "Куда впадает Северная Двина?",
+      o: ["В Белое море", "В Балтийское море", "В Северный Ледовитый океан напрямую",
+         "В Ладожское озеро"], a: 0 }
+  ];
+
+  var SURVEY = [
+    "Мне интересно узнавать историю Архангельска.",
+    "Я хотел(а) бы пройти ещё один городской маршрут-квест.",
+    "История города кажется мне скучной.",
+    "Я могу назвать 3–5 мест в центре, связанных с историей города.",
+    "Я бы рассказал(а) друзьям об этом формате прогулки."
+  ];
+  var REVERSE = 2; // утверждение №3 считается «наоборот»
+
+  var STORE = "severny-sled-test-v1";
+  var state = {
+    num: "", group: "", stage: "",            // group: A|B, stage: pre|post
+    qi: 0, answers: [], si: 0, survey: []
+  };
+
+  var app = document.getElementById("app");
+  var err = null;
+
+  function save() {
+    try {
+      localStorage.setItem(STORE, JSON.stringify({
+        num: state.num, group: state.group, stage: state.stage
+      }));
+    } catch (e) {}
+  }
+  function load() {
+    try {
+      var raw = localStorage.getItem(STORE);
+      if (raw) {
+        var d = JSON.parse(raw);
+        state.num = d.num || ""; state.group = d.group || ""; state.stage = d.stage || "";
+      }
+    } catch (e) {}
+  }
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  // ---------------- экран 1: старт ----------------
+  function renderIntro() {
+    app.innerHTML =
+      '<h1>Тест по истории<br>Архангельска</h1>' +
+      '<p class="sub">Один и тот же тест до и после знакомства с материалом. ' +
+      '10 вопросов, 4 варианта ответа, 6 минут. Без подсказок и без телефона.</p>' +
+      '<label class="label" for="num">Твой номер в списке</label>' +
+      '<input id="num" type="number" inputmode="numeric" min="1" max="99" ' +
+      'placeholder="например, 7" value="' + esc(state.num) + '">' +
+      '<span class="label">Твоя группа</span>' +
+      '<div class="chips" id="group">' +
+        chip("A", "А", "читал текст", state.group === "A") +
+        chip("B", "Б", "проходил квест", state.group === "B") +
+      '</div>' +
+      '<span class="label">Какой это тест</span>' +
+      '<div class="chips" id="stage">' +
+        chip("pre", "До", "первый раз", state.stage === "pre") +
+        chip("post", "После", "после материала", state.stage === "post") +
+      '</div>' +
+      '<button class="btn" id="go">Начать</button>' +
+      '<p class="err" id="err">Выбери номер, группу и этап теста</p>' +
+      '<p class="hint">Номер, группа и этап запомнятся на этом телефоне — ' +
+      'второй тест пройдёт с теми же данными.</p>';
+
+    bindChips("group", "group");
+    bindChips("stage", "stage");
+    document.getElementById("go").addEventListener("click", start);
+    var inp = document.getElementById("num");
+    inp.addEventListener("input", function () { state.num = inp.value.trim(); save(); });
+  }
+
+  function chip(val, title, note, active) {
+    return '<button class="chip" type="button" data-val="' + val + '" aria-pressed="' +
+      (active ? "true" : "false") + '">' + title + "<small>" + note + "</small></button>";
+  }
+
+  function bindChips(containerId, key) {
+    var box = document.getElementById(containerId);
+    box.addEventListener("click", function (e) {
+      var b = e.target.closest(".chip");
+      if (!b) return;
+      state[key] = b.getAttribute("data-val");
+      save();
+      Array.prototype.forEach.call(box.querySelectorAll(".chip"), function (c) {
+        c.setAttribute("aria-pressed", c === b ? "true" : "false");
+      });
+    });
+  }
+
+  function start() {
+    err = document.getElementById("err");
+    if (!state.num || !state.group || !state.stage) {
+      err.style.display = "block";
+      return;
+    }
+    state.qi = 0;
+    state.answers = [];
+    state.si = 0;
+    state.survey = [];
+    renderQuestion();
+  }
+
+  // ---------------- экран 2: вопросы ----------------
+  function renderQuestion() {
+    var q = QUESTIONS[state.qi];
+    var pct = Math.round((state.qi) / QUESTIONS.length * 100);
+    app.innerHTML =
+      '<div class="topline"><span>Вопрос ' + (state.qi + 1) + ' из ' + QUESTIONS.length + '</span>' +
+      '<span>' + (state.stage === "pre" ? "тест «до»" : "тест «после»") + '</span></div>' +
+      '<div class="bar"><i style="width:' + pct + '%"></i></div>' +
+      '<p class="q">' + esc(q.q) + "</p>" +
+      '<div id="opts">' + q.o.map(function (o, i) {
+        return '<button class="opt" type="button" data-i="' + i + '">' + esc(o) + "</button>";
+      }).join("") + "</div>" +
+      (state.qi > 0 ? '<button class="back" id="back">← вернуться к предыдущему</button>' : "");
+
+    document.getElementById("opts").addEventListener("click", function (e) {
+      var b = e.target.closest(".opt");
+      if (!b) return;
+      state.answers[state.qi] = parseInt(b.getAttribute("data-i"), 10);
+      state.qi += 1;
+      if (state.qi < QUESTIONS.length) renderQuestion(); else afterQuestions();
+    });
+    var back = document.getElementById("back");
+    if (back) back.addEventListener("click", function () { state.qi -= 1; renderQuestion(); });
+  }
+
+  function afterQuestions() {
+    if (state.stage === "post") { state.si = 0; state.survey = []; renderSurvey(); }
+    else renderResult();
+  }
+
+  // ---------------- экран 3: опросник ----------------
+  function renderSurvey() {
+    var pct = Math.round((QUESTIONS.length + state.si) / (QUESTIONS.length + SURVEY.length) * 100);
+    app.innerHTML =
+      '<div class="topline"><span>Интерес · ' + (state.si + 1) + ' из ' + SURVEY.length +
+      '</span><span>осталось немного</span></div>' +
+      '<div class="bar"><i style="width:' + pct + '%"></i></div>' +
+      '<p class="q">' + esc(SURVEY[state.si]) + "</p>" +
+      '<div class="scale" id="scale">' +
+        [1, 2, 3, 4, 5].map(function (v) {
+          return '<button type="button" data-v="' + v + '">' + v + "</button>";
+        }).join("") +
+      "</div>" +
+      '<div class="scale-legend"><span>1 — совсем не так</span><span>5 — полностью так</span></div>';
+
+    document.getElementById("scale").addEventListener("click", function (e) {
+      var b = e.target.closest("button");
+      if (!b) return;
+      state.survey[state.si] = parseInt(b.getAttribute("data-v"), 10);
+      state.si += 1;
+      if (state.si < SURVEY.length) renderSurvey(); else renderResult();
+    });
+  }
+
+  // ---------------- экран 4: результат ----------------
+  function renderResult() {
+    var correct = 0;
+    for (var i = 0; i < QUESTIONS.length; i++) {
+      if (state.answers[i] === QUESTIONS[i].a) correct += 1;
+    }
+    var interest = 0;
+    if (state.stage === "post") {
+      state.survey.forEach(function (v, i) {
+        interest += (i === REVERSE) ? (6 - v) : v;
+      });
+    }
+
+    var code = "№" + (state.num || "—") + " · " + (state.group === "A" ? "А" : "Б") +
+      " · " + (state.stage === "pre" ? "до" : "после") + " · знания " + correct + "/10" +
+      (state.stage === "post" ? " · интерес " + interest + "/25" : "");
+
+    var groupTitle = state.group === "A" ? "группа А (текст)" : "группа Б (квест)";
+    var stageTitle = state.stage === "pre" ? "тест «до»" : "тест «после»";
+
+    app.innerHTML =
+      '<h2>Готово, спасибо!</h2>' +
+      '<p class="sub" style="margin-bottom:4px">' + esc(groupTitle) + " · " + esc(stageTitle) + "</p>" +
+      '<div class="score"><b>' + correct + '</b><span>из 10 правильных</span></div>' +
+      (state.stage === "post"
+        ? '<div class="stat">Интерес к истории: <b>' + interest + ' из 25</b></div>'
+        : '<div class="stat">Это первый замер. Пройди материал и вернись с тестом «после» — ' +
+          'на этом телефоне все данные сохранятся.</div>') +
+      '<p class="label" style="margin-top:18px">Результат для группы</p>' +
+      '<pre class="code" id="code">' + esc(code) + "</pre>" +
+      '<button class="btn" id="copy">Скопировать и отправить в чат</button>' +
+      '<button class="btn btn-ghost" id="share">Поделиться…</button>' +
+      '<p class="hint" id="status">Отправь это сообщение в группу — учитель соберёт результаты.</p>' +
+      '<button class="back" id="again" style="margin-top:18px">Пройти ещё раз</button>';
+
+    var status = document.getElementById("status");
+
+    document.getElementById("copy").addEventListener("click", function () {
+      copyText(code).then(function () {
+        status.textContent = "Скопировано. Вставь в чат группы и отправь.";
+        status.style.color = "#2f8f5b";
+      }).catch(function () {
+        status.textContent = "Не получилось скопировать — выдели текст в тёмном блоке и скопируй вручную.";
+        status.style.color = "#b4552a";
+      });
+    });
+
+    var shareBtn = document.getElementById("share");
+    if (!navigator.share) shareBtn.classList.add("hidden");
+    shareBtn.addEventListener("click", function () {
+      navigator.share({ text: code }).catch(function () {});
+    });
+
+    document.getElementById("again").addEventListener("click", function () {
+      state.qi = 0; state.answers = []; state.si = 0; state.survey = [];
+      renderIntro();
+    });
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text);
+    }
+    return new Promise(function (resolve, reject) {
+      try {
+        var ta = document.createElement("textarea");
+        ta.value = text;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+        resolve();
+      } catch (e) { reject(e); }
+    });
+  }
+
+  load();
+  renderIntro();
+})();
+</script>
+</body>
+</html>
